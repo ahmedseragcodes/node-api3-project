@@ -38,6 +38,7 @@ router.get('/:id', logger, validateUserId, (req, res) => {
 router.post('/', (req, res) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
+
 });
 
 router.put('/:id', (req, res) => {
@@ -51,9 +52,21 @@ router.delete('/:id', (req, res) => {
   // this needs a middleware to verify user id
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', logger, validateUserId, (req, res) => {
   // RETURN THE ARRAY OF USER POSTS
   // this needs a middleware to verify user id
+  const { id }=req.params;
+  Users.getUserPosts(id)
+  .then((posts)=>{
+    if (!posts){
+      res.status(404).json({message: "No posts found for user"})
+    } else {
+      res.status(200).json(posts);
+    }
+  })
+  .catch((err)=>{
+    res.status(500).json({message: err.message})
+  })
 });
 
 router.post('/:id/posts', (req, res) => {
