@@ -35,9 +35,14 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   // DO YOUR MAGIC
+  if (!req.body.text){
+    res.status(406).json({message: "Post Text Is Required"});
+  } else {
+    next()
+  }
 }
 
 // do not forget to expose these functions to other modules
 module.exports={
-  logger, validateUserId, validateUser
+  logger, validateUserId, validateUser, validatePost
 }
