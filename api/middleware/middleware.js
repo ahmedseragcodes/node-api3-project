@@ -25,6 +25,12 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   // DO YOUR MAGIC
+  const incomingName = req.body.name;
+  if (!incomingName){
+    res.status(406).json({message: "Name is required"})
+  } else {
+    next()
+  }
 }
 
 function validatePost(req, res, next) {
@@ -33,5 +39,5 @@ function validatePost(req, res, next) {
 
 // do not forget to expose these functions to other modules
 module.exports={
-  logger, validateUserId
+  logger, validateUserId, validateUser
 }
