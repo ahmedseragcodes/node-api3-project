@@ -47,10 +47,29 @@ router.post('/', logger, validateUser, (req, res) => {
   })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
+  const { id }=req.params;
+  const changes = req.body;
+
+Users.update(id, changes)
+.then((recordsUpdated)=>{
+  if (recordsUpdated>0){
+    return Users.getById(id);
+  } else {
+    res.status(404).json({message: "No records updated and/or no records found matching id"})
+  }
+})
+.then((updatedUser)=>{
+  res.status(200).json(updatedUser);
+})
+.catch((err)=>{
+  res.status(500).json({message: err.messsage})
+})
+
+
 });
 
 router.delete('/:id', logger, validateUserId, (req, res) => {
