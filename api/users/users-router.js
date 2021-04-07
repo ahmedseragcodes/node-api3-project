@@ -47,9 +47,21 @@ router.put('/:id', (req, res) => {
   // and another middleware to check that the request body is valid
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', logger, validateUserId, (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
+  const { id }=req.params;
+  Users.remove(id)
+  .then((recordsDeleted)=>{
+    if (recordsDeleted > 0){
+      res.status(200).json({message: "All Records Matching ID Successfully Deleted"})
+    } else {
+      res.status(404).json({message: "Unable to find any records matching id to delete"})
+    }
+  })
+  .catch((err)=>{
+    res.status(500).json({message: err.message})
+  })
 });
 
 router.get('/:id/posts', logger, validateUserId, (req, res) => {
