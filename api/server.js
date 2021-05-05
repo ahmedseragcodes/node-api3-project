@@ -1,13 +1,25 @@
 const express = require('express');
+const cors = require("cors");
+const helmet = require("helmet");
+const UsersRouter = require("./users/users-router");
 
 const server = express();
 
-// remember express by default cannot parse JSON in request bodies
+server.use(express.json());
+server.use(cors());
+server.use(helmet());
+server.use("/api/users", UsersRouter);
 
-// global middlewares and the user's router need to be connected here
+//SANITY CHECK ENDPOINT
 
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
+});
+
+//ERROR HANDLING MIDDLEWARE
+
+server.use((err, req, res, next )=>{
+  res.status(500).json({message: err.message});
 });
 
 module.exports = server;
