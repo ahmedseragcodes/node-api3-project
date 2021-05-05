@@ -13,7 +13,7 @@ server.use("/api/users", UsersRouter);
 //SANITY CHECK ENDPOINT
 
 server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+  res.send(`API Up`);
 });
 
 //ERROR HANDLING MIDDLEWARE

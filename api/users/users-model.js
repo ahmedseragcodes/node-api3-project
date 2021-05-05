@@ -45,3 +45,7 @@ function remove(id) {
     .where('id', id)
     .del();
 }
+
+module.exports = {
+  get, getById, getUserPosts, insert, update, remove
+}
